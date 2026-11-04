@@ -5,6 +5,23 @@ and Neovim configuration files.
 
 ## Installation
 
+Run the installer with Bash (requires `curl` and `git`):
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Mrchazaaa/bash-config/master/install.sh | bash
+```
+
+This clones the repository into `~/.config/bash-config` and adds its loader to
+`~/.bashrc`. Re-running the installer reuses an existing checkout without updating
+it and avoids adding the same loader line twice. An unrelated directory at the
+installation path is left untouched and causes the installer to stop.
+
+Open a new Bash shell or run `source ~/.bashrc` to load the configuration.
+
+You can also run `bash install.sh` from a local copy of the repository.
+
+### Manual installation
+
 1. Clone this repository into `~/.config/bash-config`:
 
    ```bash
