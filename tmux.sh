@@ -21,8 +21,10 @@ _starttmux_read_sessions() {
     ' "$1"
 }
 
-# Accept parsed name:directory records as separate arguments.
+# Accept a preferred session name followed by parsed name:directory records.
 _starttmux_sessions() {
+    local preferred="${1:-}"
+    shift
     if [ "$#" -eq 0 ]; then
         printf 'At least one session is required.\n' >&2
         return 1
@@ -39,6 +41,9 @@ _starttmux_sessions() {
         esac
         tmux has-session -t "=$name" 2>/dev/null || tmux new-session -d -s "$name" -c "$dir" || return
     done
+    if [ -n "$preferred" ] && tmux has-session -t "=$preferred" 2>/dev/null; then
+        target="$preferred"
+    fi
     if [ -n "$TMUX" ]; then
         tmux switch-client -t "=$target"
     else
@@ -48,13 +53,13 @@ _starttmux_sessions() {
 
 starttmux() {
     if [ "$#" -gt 1 ]; then
-        printf 'Usage: starttmux [sessions.json]\n' >&2
+        printf 'Usage: starttmux [session-name]\n' >&2
         return 1
     fi
 
     local data
-    data=$(_starttmux_read_sessions "${1:-$STARTTMUX_CONFIG}") || return 1
+    data=$(_starttmux_read_sessions "$STARTTMUX_CONFIG") || return 1
     local sessions=()
     mapfile -t sessions <<< "$data"
-    _starttmux_sessions "${sessions[@]}"
+    _starttmux_sessions "${1:-}" "${sessions[@]}"
 }

@@ -3,6 +3,15 @@
 Personal Bash configuration, loaded through `init.sh`, which sources the tmux
 and Neovim configuration files.
 
+## Starting tmux
+
+Run `starttmux` to create any missing sessions from `sessions.json` and focus the
+first configured session. Pass an optional session name, such as
+`starttmux "my-session"`, to focus that exact session if it exists after setup.
+This also works for existing sessions outside the configuration. If no matching
+session exists, the first configured session is focused as usual. Inside tmux,
+the command switches the current client to the selected session.
+
 ## Installation
 
 Run the installer with Bash (requires `curl` and `git`):
